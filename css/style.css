@@ -85,6 +85,32 @@ img, svg { display: block; max-width: 100%; }
   color: transparent;
 }
 
+/* ---------- Accessibility: focus + skip link ---------- */
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+main:focus-visible { outline: none; }
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 200;
+  padding: 10px 18px;
+  background: var(--brand);
+  color: #fff;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  transform: translateY(-150%);
+  transition: transform 0.25s ease;
+}
+.skip-link:focus { transform: translateY(0); }
+
 /* ---------- Animated background ---------- */
 .bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
 .bg__orb { position: absolute; border-radius: 50%; filter: blur(110px); opacity: 0.5; will-change: transform; }
@@ -415,12 +441,15 @@ img, svg { display: block; max-width: 100%; }
 .service:hover .service__line { width: 44px; }
 
 /* ---------- Work / Portfolio ---------- */
-.work { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.work { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; align-items: stretch; }
 .card {
+  display: flex;
+  flex-direction: column;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
+  height: 100%;
   transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
 .card:hover { transform: translateY(-8px); border-color: var(--border-strong); box-shadow: var(--glow); }
@@ -482,10 +511,10 @@ img, svg { display: block; max-width: 100%; }
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
-.card__body { padding: 24px; }
+.card__body { padding: 24px; display: flex; flex-direction: column; flex: 1 1 auto; }
 .card__title { font-size: 1.18rem; margin-bottom: 10px; }
 .card__desc { color: var(--muted); font-size: 0.93rem; margin-bottom: 16px; }
-.card__tech { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.card__tech { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; margin-top: auto; }
 .card__tech li {
   font-size: 0.76rem; font-weight: 500;
   padding: 5px 11px; border-radius: 999px;
@@ -493,8 +522,40 @@ img, svg { display: block; max-width: 100%; }
   border: 1px solid var(--border);
   color: var(--muted);
 }
-.card__link { display: inline-flex; align-items: center; gap: 7px; font-family: 'Sora', sans-serif; font-weight: 600; font-size: 0.92rem; color: var(--brand); transition: gap 0.25s ease; }
+.card__link { display: inline-flex; align-self: flex-start; align-items: center; gap: 7px; font-family: 'Sora', sans-serif; font-weight: 600; font-size: 0.92rem; color: var(--brand); transition: gap 0.25s ease; }
 .card__link:hover { gap: 12px; }
+
+/* Dual action buttons (Live Demo + View Code) */
+.card__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.card__btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: 'Sora', sans-serif; font-weight: 600; font-size: 0.9rem;
+  padding: 11px 18px; border-radius: 999px;
+  border: 1px solid transparent;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease, color 0.3s ease, gap 0.25s ease;
+}
+.card__btn svg { flex-shrink: 0; }
+.card__btn--primary {
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  color: #050810;
+  box-shadow: 0 10px 30px -12px rgba(110, 139, 255, 0.55);
+}
+.card__btn--primary:hover { transform: translateY(-3px); gap: 12px; box-shadow: var(--glow); }
+.card__btn--ghost {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+.card__btn--ghost:hover { transform: translateY(-3px); border-color: var(--brand); color: var(--brand); }
+
+/* Featured project accent */
+.card--featured { border-color: rgba(110, 139, 255, 0.35); }
+.card--featured:hover { box-shadow: var(--glow), var(--glow-cyan); }
+.card__status--live {
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  border-color: transparent;
+  color: #050810;
+}
 
 /* ---------- Stats ---------- */
 .stats-section { padding-top: 0; }
@@ -832,6 +893,8 @@ img, svg { display: block; max-width: 100%; }
   .stats { flex-direction: column; }
   .contact__panel, .contact__form, .outcomes, .skills { padding: 24px; }
   .float-card { display: none; }
+  .card__actions { flex-direction: column; }
+  .card__btn { width: 100%; }
 }
 
 /* ---------- Scrollbar ---------- */
